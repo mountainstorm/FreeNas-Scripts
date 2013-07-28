@@ -3,7 +3,13 @@ auto-shutdown.py
 
 This is a simple python script which, when scheduled as a launch job, checks 
 if it can ping a list of client ip addresses; if it can't ping any of them for
-a an hour it calls shutdown.
+an hour it calls shutdown.
+
+
+Requirements
+------------
+
+FreeNAS 9.1; for init job support (and HP Microserver WoL support)
 
 
 Installation
@@ -19,11 +25,10 @@ Installation
 4.4. sync
 4.5. mount -ur /
 4.6. reboot
-5. Goto System > Cron Jobs > Add Cron Jobs
-      Command: /bin/auto-shutdown.py
-      Short description: Auto shutdown
-      Redirect stdout
-      Redirect stderr
+5. Goto System > Add Init/Shutdown Script
+	Type: Command
+	Command: /bin/auto-shutdown.py
+	Type: Post Init
 
 
 Notes
