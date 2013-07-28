@@ -61,4 +61,4 @@ easiest way to get the mac address of your FreeNas is to
 
 Keywords
 --------
-FreeNas, MacOSX, Windows, Ping, Shutdown, Wake on lan
+FreeNas, MacOSX, Windows, Ping, Shutdown, Wake on lan, HP Microserver, N54L
