@@ -39,8 +39,8 @@ many good guides to doing this only, I used this one:
 http://www.howtogeek.com/77132/how-to-enable-ping-echo-replies-in-windows-8/
 
 In short you need to open up the "Windows Firewall and Advanced Settings" MMC
-application > Select "Inbound Rules" > "File and Printer Sharing (Echo Request 
-- ICMPv4-In)".  Right click and enable rule.
+application > Select "Inbound Rules" > "File and Printer Sharing (Echo Request - ICMPv4-In)". 
+Right click and enable rule.
 
 simple!
 
