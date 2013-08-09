@@ -45,13 +45,16 @@ DOWNTIME_TEST_TIMEOUT = 300.0 # 5 mins
 #
 
 import os
+import sys
 import subprocess
 from time import time, sleep
 
 
 # prefil hosts with now
+print(u'auto-shutdown.py: watching the following hosts:')
 hosts = {}
 for addr in HOST_LIST:
+	print(u'auto-shutdown.py:  * %s' % addr)
 	hosts[addr] = time()
 
 # check if all addresses have been uncontactable for DOWNTIME_FOR_SHUTDOWN
@@ -73,5 +76,7 @@ while not quit:
 
 # if all addresses are down; shutdown
 if quit:
+	print(u'auto-shutdown.py: watched hosts have done a runner, shutdown')
 	subprocess.call([u'/bin/sync'])
 	subprocess.call([u'/sbin/shutdown', u'-p', u'now'])
+print(u'auto-shutdown.py: done')
