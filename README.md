@@ -17,18 +17,20 @@ Installation
 
 1. Copy the auto-shutdown.py script onto one of your file shares
 2. Log into the FreeNas web interface
-3. Goto Shell
-4. If you have a USB (embedded) install of FreeNas; remount the filesystem rw
+3. Goto System > Add Init/Shutdown Script
+	Type: Command
+	Command: <mount location of the auto-shutdown.py>
+	Type: Post Init
+
+If you want to actually install the scripts on your host (USB based setup)
+1. Goto Shell
+2. If you have a USB (embedded) install of FreeNas; remount the filesystem rw
 	1. mount -uw /
-	2. mv /mnt/StorageArray/Media/auto-shutdown.py /bin/
+	2. mv /mnt/StorageArray/Documents/scripts/auto-shutdown.py /bin/
 	3. chmod +x /bin/auto-shutdown.py
 	4. sync
 	5. mount -ur /
 	6. reboot
-5. Goto System > Add Init/Shutdown Script
-	Type: Command
-	Command: /bin/auto-shutdown.py
-	Type: Post Init
 
 
 Notes
