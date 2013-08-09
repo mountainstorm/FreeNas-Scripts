@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/local/bin/python -u 
 # coding: utf-8
 
 # Copyright (c) 2013 Mountainstorm
@@ -49,34 +49,41 @@ import sys
 import subprocess
 from time import time, sleep
 
+#
+# As we're long running we don't want to stall the boot process - so we'll
+# fork and let the parent return
+#
 
-# prefil hosts with now
-print(u'auto-shutdown.py: watching the following hosts:')
-hosts = {}
-for addr in HOST_LIST:
-	print(u'auto-shutdown.py:  * %s' % addr)
-	hosts[addr] = time()
+if os.fork() == 0:
+	# child
 
-# check if all addresses have been uncontactable for DOWNTIME_FOR_SHUTDOWN
-devnull = open(os.devnull, 'w')
-quit = False
-while not quit:
-	quit = True
+	# prefil hosts with now
+	print(u'auto-shutdown.py: watching the following hosts:')
+	hosts = {}
 	for addr in HOST_LIST:
-		if subprocess.call(
-				[u'/sbin/ping', u'-c', u'1', u'-t', u'1', addr], 
-				stdout=devnull,
-				stderr=devnull
-			) == 0:
-			hosts[addr] = time()
+		print(u'auto-shutdown.py:  * %s' % addr)
+		hosts[addr] = time()
 
-		if (time() - hosts[addr]) < DOWNTIME_FOR_SHUTDOWN:
-			quit = False
-	sleep(DOWNTIME_TEST_TIMEOUT)
+	# check if all addresses have been uncontactable for DOWNTIME_FOR_SHUTDOWN
+	devnull = open(os.devnull, 'w')
+	quit = False
+	while not quit:
+		quit = True
+		for addr in HOST_LIST:
+			if subprocess.call(
+					[u'/sbin/ping', u'-c', u'1', u'-t', u'1', addr], 
+					stdout=devnull,
+					stderr=devnull
+				) == 0:
+				hosts[addr] = time()
 
-# if all addresses are down; shutdown
-if quit:
-	print(u'auto-shutdown.py: watched hosts have done a runner, shutdown')
-	subprocess.call([u'/bin/sync'])
-	subprocess.call([u'/sbin/shutdown', u'-p', u'now'])
-print(u'auto-shutdown.py: done')
+			if (time() - hosts[addr]) < DOWNTIME_FOR_SHUTDOWN:
+				quit = False
+		sleep(DOWNTIME_TEST_TIMEOUT)
+
+	# if all addresses are down; shutdown
+	if quit:
+		print(u'auto-shutdown.py: watched hosts have done a runner, shutdown')
+		subprocess.call([u'/bin/sync'])
+		subprocess.call([u'/sbin/shutdown', u'-p', u'now'])
+	print(u'auto-shutdown.py: done')
